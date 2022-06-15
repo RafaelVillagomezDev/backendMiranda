@@ -10,7 +10,9 @@ const usersRouter = require('./routes/users')
 const contactRouter = require('./routes/contacts')
 const bookingRouter = require('./routes/bookings')
 const roomRouter = require('./routes/rooms')
-
+const indexRouter = require('./routes/auth')
+const indexRouter = require('./routes/auth')
+const authRouter = require('./routes/auth')
 var app = express()
 app.use(cors())
 // view engine setup
@@ -19,7 +21,7 @@ app.set('view engine', 'jade')
 
 app.use(logger('dev'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -27,7 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/users', usersRouter)
 app.use('/contacts', contactRouter)
 app.use('/bookings', bookingRouter)
+//Tengo duda aqui
 app.use('/rooms', roomRouter)
+//Autenticacion passport
+app.use('/', indexRouter)
+app.use('/', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -13,7 +13,23 @@ const getBooking = (req, res) => {
   res.json(booking)
 }
 
+const postBooking = (req, res) => {
+  const newBooking = {
+    id: data.bookings.length + 1,
+    date_messague: req.body.date_messague,
+    name_customer: req.body.name_customer,
+    email_customer: req.body.email_customer,
+    tlf_customer: req.body.tlf_customer,
+    subject: req.body.subject,
+    comment: req.body.comment,
+  }
+
+  data.bookings.push(newBooking)
+  res.json(newBooking)
+}
+
 module.exports = {
   getBookings,
   getBooking,
+  postBooking,
 }

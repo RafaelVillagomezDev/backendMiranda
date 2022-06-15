@@ -14,7 +14,12 @@ const getRoom = (req, res) => {
   res.json(room)
 }
 
+const postRoom = (req, res) => {
+  res.send('Habita añadida')
+}
+
 module.exports = {
   getRooms,
   getRoom,
+  postRoom,
 }

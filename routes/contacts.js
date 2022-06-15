@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { getContacts, getContact } = require('../controllers/controllerContacts')
 
-/* Routes Contacts */
+/* GET Contacts */
 router.get('/', getContacts)
 router.get('/:id', getContact)
 

@@ -1,11 +1,15 @@
 const express = require('express')
 const router = express.Router()
 
-const { getBookings, getBooking } = require('../controllers/controllerBooking')
+const {
+  getBookings,
+  getBooking,
+  postBooking,
+} = require('../controllers/controllerBooking')
 
-/* GET bookings list. */
+/* GET bookings */
 router.get('/', getBookings)
-/*GEY unique Booking*/
 router.get('/:id', getBooking)
-
+/*POST bookings*/
+router.post('/booking', postBooking)
 module.exports = router
