@@ -19,7 +19,7 @@ router.post(
   '/user/register',
   passport.authenticate('register', { session: false }),
   async (req, res, next) => {
-    return res.json({
+    res.json({
       messague: 'Registrado',
       user: req.user,
     })
@@ -38,13 +38,15 @@ router.post('/user/login', async (req, res, next) => {
         const body = {
           _id: user._id,
           username: user.username,
-          password: user.password,
         }
-
+        //Semilla shabadum
         const token = jwt.sign({ user: body }, 'shabadum')
+
         return res.json({ token })
       })
-    } catch (e) {}
+    } catch (e) {
+      return next(e)
+    }
   })(req, res, next)
 })
 

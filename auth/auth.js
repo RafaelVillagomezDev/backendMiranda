@@ -13,6 +13,7 @@ passport.use(
     //Se ejecuta una vez validados
     async (username, password, done) => {
       try {
+        console.log('entra')
         //Create activa el midleware save es lo mismo que  new MyModel(doc).save()
         const user = await User.create({ username, password })
         return done(null, user)
@@ -33,7 +34,9 @@ passport.use(
     async (username, password, done) => {
       try {
         //Me busca en mi base de datos por el filtro de usuario
-        const user = await User.findOne({ username })
+
+        const user = await User.findOne({ username: username })
+
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' })
         }
@@ -43,7 +46,7 @@ passport.use(
         if (!validate) {
           return done(null, false, { message: 'Usuario no encontrado' })
         }
-
+        console.log(validate)
         return done(null, false, { message: 'Login succesful' })
       } catch (e) {
         return done(e)
