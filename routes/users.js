@@ -9,6 +9,7 @@ const {
 } = require('../controllers/controllerUsers')
 //Auth
 require('../auth/auth')
+
 const jwt = require('jsonwebtoken')
 
 /* GET Users list. */
@@ -38,8 +39,10 @@ router.post('/user/login', async (req, res, next) => {
         const body = {
           _id: user._id,
           username: user.username,
+          password: user.password,
         }
         //Semilla shabadum
+        console.log(typeof user)
         const token = jwt.sign({ user: body }, 'shabadum')
 
         return res.json({ token })

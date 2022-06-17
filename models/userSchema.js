@@ -20,7 +20,8 @@ userSchema.pre('save', async function (next) {
 })
 //Metodo para validar la password q ingresamos con la de la BBDD
 userSchema.methods.isValidPassword = async function (password) {
-  const compare = await bcrypt.compare(password, this.password)
+  const user = this
+  const compare = await bcrypt.compare(password, user.password)
   return compare
 }
 

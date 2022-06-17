@@ -1,6 +1,8 @@
 const passport = require('passport')
 const localStrategy = require('passport-local').Strategy
 const User = require('../models/userSchema')
+const JWTStrategy = require('passport-jwt').Strategy
+const ExtractJWT = require('passport-jwt').ExtractJwt
 
 //Midlewares
 passport.use(
@@ -35,7 +37,7 @@ passport.use(
       try {
         //Me busca en mi base de datos por el filtro de usuario
 
-        const user = await User.findOne({ username: username })
+        const user = await User.findOne({ username })
 
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' })
@@ -44,12 +46,28 @@ passport.use(
         const validate = await User.isValidPassword(password)
 
         if (!validate) {
-          return done(null, false, { message: 'Usuario no encontrado' })
+          return done(null, false, { message: 'Password bad' })
         }
-        console.log(validate)
+
         return done(null, false, { message: 'Login succesful' })
       } catch (e) {
         return done(e)
+      }
+    },
+  ),
+)
+
+passport.use(
+  new JWTStrategy(
+    {
+      secretOrKey: 'shabadum',
+      jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token'),
+    },
+    async (token, done) => {
+      try {
+        return done(null, token.user)
+      } catch (e) {
+        return done(error)
       }
     },
   ),
