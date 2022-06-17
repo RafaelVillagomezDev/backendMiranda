@@ -1,6 +1,7 @@
 const data = require('../fakeData.json')
-const express = require('express')
 const UserShema = require('../models/userSchema')
+const bcrypt = require('bcrypt')
+
 const getUsers = (req, res) => {
   res.json(data.users)
 }
@@ -17,7 +18,7 @@ const getUser = (req, res) => {
 const postUser = (req, res) => {
   const user = new UserShema({
     username: req.body.username,
-    password: req.body.password,
+    password: bcrypt.hashSync(req.body.password, 10),
   })
 
   user.save().then((data) => {
