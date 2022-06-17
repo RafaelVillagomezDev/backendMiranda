@@ -1,15 +1,52 @@
 const express = require('express')
+const passport = require('passport')
 const router = express.Router()
+
 const {
   getUsers,
   getUser,
   postUser,
 } = require('../controllers/controllerUsers')
+//Auth
+require('../auth/auth')
+const jwt = require('jsonwebtoken')
 
 /* GET Users list. */
 router.get('/', getUsers)
 router.get('/:id', getUser)
-router.post('/user/add', postUser)
+// router.post('/user/register', postUser)
+router.post(
+  '/user/register',
+  passport.authenticate('register', { session: false }),
+  async (req, res, next) => {
+    return res.json({
+      messague: 'Registrado',
+      user: req.user,
+    })
+  },
+)
+
+router.post('/user/login', async (req, res, next) => {
+  passport.authenticate('login', async (err, user, info) => {
+    try {
+      if (err || user) {
+        const error = new Error('new Error')
+        return next(error)
+      }
+      req.login(user, { session: false }, async (err) => {
+        if (err) return next(err)
+        const body = {
+          _id: user._id,
+          username: user.username,
+          password: user.password,
+        }
+
+        const token = jwt.sign({ user: body }, 'shabadum')
+        return res.json({ token })
+      })
+    } catch (e) {}
+  })(req, res, next)
+})
 
 module.exports = router
 
