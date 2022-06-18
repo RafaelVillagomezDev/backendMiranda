@@ -3,8 +3,10 @@ const localStrategy = require('passport-local').Strategy
 const User = require('../models/userSchema')
 const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJWT = require('passport-jwt').ExtractJwt
+const bcrypt = require('bcrypt')
 
 //Midlewares
+//Si esto tiene exito mediante next() enviamos la informacion del usuario al siguiente midleware
 passport.use(
   'register',
   new localStrategy(
@@ -19,8 +21,8 @@ passport.use(
         //Create activa el midleware save es lo mismo que  new MyModel(doc).save()
         const user = await User.create({ username, password })
         return done(null, user)
-      } catch (e) {
-        done(e)
+      } catch (error) {
+        done(error)
       }
     },
   ),
@@ -42,32 +44,32 @@ passport.use(
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' })
         }
-
-        const validate = await User.isValidPassword(password)
+        //Validamos las contraseñas cifradas de la bdd con las que introducimos
+        const validate = await bcrypt.compare(password, user.password)
 
         if (!validate) {
-          return done(null, false, { message: 'Password bad' })
+          return done(null, false, { message: 'Bad Password ' })
         }
 
-        return done(null, false, { message: 'Login succesful' })
-      } catch (e) {
-        return done(e)
+        return done(null, user, { message: 'Login succesful' })
+      } catch (error) {
+        return done(error)
       }
     },
   ),
 )
-
+//Creamos un token
 passport.use(
   new JWTStrategy(
     {
-      secretOrKey: 'shabadum',
+      secretOrKey: 'TOP_SECRET',
       jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token'),
     },
     async (token, done) => {
       try {
         return done(null, token.user)
-      } catch (e) {
-        return done(error)
+      } catch (error) {
+        done(error)
       }
     },
   ),

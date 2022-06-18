@@ -5,6 +5,9 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 const mongoose = require('mongoose')
+const passport = require('passport')
+// require('dotenv').load()
+require('./auth/auth')
 
 mongoose.connect(
   'mongodb://localhost:27017/MirandaTest',
@@ -23,6 +26,7 @@ const usersRouter = require('./routes/users')
 const contactRouter = require('./routes/contacts')
 const bookingRouter = require('./routes/bookings')
 const roomRouter = require('./routes/rooms')
+const authRouter = require('./routes/authentication')
 
 var app = express()
 app.use(cors())
@@ -37,14 +41,13 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 //ROUTES
-app.use('/users', usersRouter)
+app.use('/user', passport.authenticate('jwt', { session: false }), usersRouter)
 app.use('/contacts', contactRouter)
 app.use('/bookings', bookingRouter)
-
-//Tengo duda aqui
 app.use('/rooms', roomRouter)
+
 //Autenticacion passport
-// app.use('/', indexRouter)
+app.use('/', authRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -61,13 +64,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
-
-// var jwt = require('jsonwebtoken')
-
-// var passport = require('passport')
-// var passportJWT = require('passport-jwt')
-
-// var ExtractJwt = passportJWT.ExtractJwt
-// var JwtStrategy = passportJWT.Strategy
 
 module.exports = app

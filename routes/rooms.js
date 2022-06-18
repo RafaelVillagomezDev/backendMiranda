@@ -7,14 +7,11 @@ const {
   postRoom,
 } = require('../controllers/controllerRooms')
 
+//Auth
+require('../auth/auth')
+
 /* GET contact list. */
-router.get(
-  '/',
-  passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
-    getRooms
-  },
-)
+router.get('/rm')
 router.get('/:id', getRoom)
 router.post('/room/add', postRoom)
 module.exports = router
