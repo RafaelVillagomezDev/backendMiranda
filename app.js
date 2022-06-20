@@ -4,22 +4,41 @@ var express = require('express')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const passport = require('passport')
-// require('dotenv').load()
+const process = require('process')
+require('dotenv').config()
 require('./auth/auth')
 
-mongoose.connect(
-  'mongodb://localhost:27017/MirandaTest',
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (err) => {
-    if (err) {
-      console.log('Error conexion')
-    } else {
-      console.log('conexion establecida')
-    }
-  },
-)
+// mongoose.connect(
+//   'mongodb://localhost:27017/MirandaTest',
+//   { useNewUrlParser: true, useUnifiedTopology: true },
+//   (err) => {
+//     if (err) {
+//       console.log('Error conexion')
+//     } else {
+//       console.log('conexion establecida')
+//     }
+//   },
+// )
+
+const mysql = require('mysql')
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASS,
+  database: process.env.MYSQL_DB,
+})
+
+connection.connect()
+
+connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
+  if (err) throw err
+
+  console.log('The solution is: ', rows[0].solution)
+})
+
+connection.end()
 
 //Files Routes
 const usersRouter = require('./routes/users')
