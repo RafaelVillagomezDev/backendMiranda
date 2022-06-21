@@ -1,6 +1,7 @@
 const data = require('../fakeData.json')
-const UserShema = require('../models/userSchema')
-const bcrypt = require('bcrypt')
+require('../app')
+
+// const bcrypt = require('bcrypt')
 
 // const getUser = (req, res) => {
 //   const id = req.params.id
@@ -12,11 +13,7 @@ const bcrypt = require('bcrypt')
 // }
 
 const getProfile = (req, res, next) => {
-  res.json({
-    message: 'Es una ruta segura',
-    user: req.user,
-    token: req.query.secret_token,
-  })
+  let sql = `SELECT * FROM users`
 }
 
 module.exports = {
