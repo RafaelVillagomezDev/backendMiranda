@@ -18,11 +18,11 @@ const userShema = Joi.object().keys({
   user_email: Joi.string().email().required(),
   //Validacion telephone .!!No acepta 926 3 4,8 800 600-APPLE!!
   telephone: Joi.string()
-    .pattern(
-      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm,
-    )
-    .min(9)
-    .max(18)
+    // .pattern(
+    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm,
+    // )
+    // .min(9)
+    // .max(18)
     .required(),
   stardate: Joi.date().timestamp('javascript'),
   description: Joi.string().min(1),
@@ -54,7 +54,7 @@ const facilities = {
   wifi: 'wifi',
 }
 
-const contactShema = Joi.object().keys({
+const roomsShema = Joi.object().keys({
   fullname: Joi.string().valid(
     bedType.singleBed,
     bedType.doubleBed,
@@ -69,22 +69,31 @@ const contactShema = Joi.object().keys({
   discount: Joi.number().min(1).max(2),
   offer_price: Joi.number().min(1),
   cancellation: Joi.string(),
-  facilities: Joi.string().valid(
-    facilities.ac.facilities.shower,
-    facilities.doubleBed,
-    facilities.towel,
-    facilities.bathup,
-    facilities.cod,
-    facilities.ledTv,
-    facilities.wifi,
-  ),
+  facilities: Joi.string(),
+  //.valid(
+  //     facilities.ac.facilities.shower,
+  //     facilities.doubleBed,
+  //     facilities.towel,
+  //     facilities.bathup,
+  //     facilities.cod,
+  //     facilities.ledTv,
+  //     facilities.wifi,
+  //   ),
 })
 
-// const roomsSchema=Joi.object().keys({
+const contactSchema = Joi.object().keys({
+  customer_name: Joi.string(),
+  customer_email: Joi.string().email().required(),
+  //Validacion telephone .!!No acepta 926 3 4,8 800 600-APPLE!!
+  customer_phone: Joi.string()
+    // .pattern(
+    //   /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm,
+    // )
+    // .min(9)
+    // .max(18)
+    .required(),
+  matter: Joi.string(),
+  comment: Joi.string(),
+})
 
-// })
-
-module.exports = {
-  userShema,
-  contactShema,
-}
+module.exports = {}

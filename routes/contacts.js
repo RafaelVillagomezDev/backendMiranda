@@ -1,10 +1,16 @@
 const express = require('express')
 const router = express.Router()
 
-const { getContacts } = require('../controllers/controllerContacts')
+const {
+  getContacts,
+  postContact,
+} = require('../controllers/controllerContacts')
+
+const contactSchema = require('../schemas/shemas')
+const valContactSchema = require('../midlewares/midlewareSchemas')
 
 /* GET Contacts */
 router.get('/', getContacts)
-// router.get('/:id', getContact)
+router.get('/create', valContactSchema(), postContact)
 
 module.exports = router
