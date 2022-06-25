@@ -5,11 +5,11 @@ const db = require('../db/db')
 const getContacts = (req, res) => {
   let sql = 'SELECT * FROM contacts'
 
-  db.query(sql, function (err, users, fields) {
+  db.query(sql, function (err, contacts, fields) {
     if (err) throw err
     res.json({
       status: 200,
-      users,
+      contacts,
       message: 'User contact retrieved successfully',
     })
   })
@@ -29,11 +29,11 @@ const postContact = (req, res) => {
     contacts ( date_messague,customer_name,customer_email,customer_phone, matter, comment )
     VALUES ("${date_messague}", "${customer_name}", "${customer_email}", "${customer_phone}", "${matter}", "${comment}")
     `
-    db.query(sql, function (err, users, fields) {
+    db.query(sql, function (err, contacts, fields) {
       if (err) throw err
       res.json({
         status: 200,
-        users,
+        contacts,
         message: 'Contact retrieved successfully',
       })
     })

@@ -6,11 +6,12 @@ const {
   postContact,
 } = require('../controllers/controllerContacts')
 
-const contactSchema = require('../schemas/shemas')
+const { contactSchema } = require('../schemas/shemas')
 const valContactSchema = require('../midlewares/midlewareSchemas')
 
 /* GET Contacts */
 router.get('/', getContacts)
-router.get('/create', valContactSchema(), postContact)
+
+router.post('/create', valContactSchema(contactSchema), postContact)
 
 module.exports = router
