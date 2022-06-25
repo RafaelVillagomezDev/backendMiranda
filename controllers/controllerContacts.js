@@ -26,8 +26,8 @@ const postContact = (req, res) => {
       comment,
     } = req.body
     let sql = `INSERT INTO
-    contacts ( date_messague,customer_name,customer_email,customer_phone, matter, comment )
-    VALUES ("${date_messague}", "${customer_name}", "${customer_email}", "${customer_phone}", "${matter}", "${comment}")
+    contacts (customer_name,customer_email,customer_phone, matter, comment )
+    VALUES ("${customer_name}", "${customer_email}", "${customer_phone}", "${matter}", "${comment}")
     `
     db.query(sql, function (err, contacts, fields) {
       if (err) throw err

@@ -8,11 +8,11 @@ const options = {
 module.exports = (schema) => {
   return async (req, res, next) => {
     try {
-      await schema.validateAsync(req.body)
+      await schema.validateAsync(req.body, options)
 
       next()
     } catch (error) {
-      res.send('Error')
+      return res.send(error.details)
     }
   }
 }
