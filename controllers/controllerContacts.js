@@ -18,7 +18,6 @@ const getContacts = (req, res) => {
 const postContact = (req, res) => {
   try {
     const {
-      date_messague,
       customer_name,
       customer_email,
       customer_phone,

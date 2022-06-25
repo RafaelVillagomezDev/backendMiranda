@@ -9,7 +9,6 @@ module.exports = (schema) => {
   return async (req, res, next) => {
     try {
       await schema.validateAsync(req.body, options)
-
       next()
     } catch (error) {
       return res.send(error.details)
