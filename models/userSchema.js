@@ -7,8 +7,18 @@ const validateEmail = (email) => {
 }
 
 const validateStatus = (status) => {
-  const re = /active|inactive/i
+  const re = /^(active|inactive)$/i
   return re.test(status)
+}
+
+const validatePosition = (position) => {
+  const re = /^(manager|recepcionist|room service)$/i
+  return re.test(position)
+}
+
+const validatePhone = (phone) => {
+  const re = /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
+  return re.test(phone)
 }
 
 const userSchema = mongoose.Schema({
@@ -25,20 +35,39 @@ const userSchema = mongoose.Schema({
     required: true,
     trim: true,
   },
-  // startdate: {
-  //   type: Date,
-  //   trim: true,
-  //   default: Date.now,
-  // },
+  startdate: {
+    type: Date,
+    trim: true,
+    default: Date.now,
+  },
+  phone: {
+    type: String,
+    trim: true,
+    unique: true,
+    validate: [validatePhone, 'Porfavor introduzca un telefono  valido '],
+  },
   description: {
     type: String,
     trim: true,
   },
-  // status: {
-  //   type: String,
-  //   trim: true,
-  //   validate: [validateStatus, 'Porafavor introduzca active o inactive'],
-  // },
+  status: {
+    type: String,
+    trim: true,
+    validate: [validateStatus, 'Porafavor introduzca active o inactive'],
+  },
+  position: {
+    type: String,
+    trim: true,
+    validate: [
+      validatePosition,
+      'Porafavor introduzca manager o recepcionist o room service',
+    ],
+  },
+  photos: [
+    {
+      url: String,
+    },
+  ],
 })
 
 //Ciframos la password con Bcrypt , this.password se refiere al Shema

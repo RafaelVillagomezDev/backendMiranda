@@ -14,7 +14,10 @@ router.post(
     const user = new User({
       email: req.user.email,
       password: req.user.password,
+      phone: req.body.phone,
       description: req.body.description,
+      status: req.body.status,
+      position: req.body.position,
     })
 
     User.create(user, function (err, user) {

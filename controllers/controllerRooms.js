@@ -1,4 +1,4 @@
-const data = require('../fakeData.json')
+// const data = require('../fakeData.json')
 const express = require('express')
 const passport = require('passport')
 
