@@ -11,15 +11,16 @@ passport.use(
   'register',
   new localStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
     //Se ejecuta una vez validados
-    async (username, password, done) => {
+    async (email, password, done) => {
       try {
-        console.log('entra')
         //Create activa el midleware save es lo mismo que  new MyModel(doc).save()
-        const user = await User.create({ username, password })
+
+        const user = { email, password }
+
         return done(null, user)
       } catch (error) {
         done(error)
@@ -32,14 +33,14 @@ passport.use(
   'login',
   new localStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
     },
-    async (username, password, done) => {
+    async (email, password, done) => {
       try {
         //Me busca en mi base de datos por el filtro de usuario
 
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ email })
 
         if (!user) {
           return done(null, false, { message: 'Usuario no encontrado' })

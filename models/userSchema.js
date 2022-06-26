@@ -1,16 +1,44 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+//Validacion email
+const validateEmail = (email) => {
+  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+  return re.test(email)
+}
+
+const validateStatus = (status) => {
+  const re = /active|inactive/i
+  return re.test(status)
+}
 
 const userSchema = mongoose.Schema({
-  username: {
+  email: {
     type: String,
+    //Me elimina los espacios enblanco para guardarlos en mi bdd
+    trim: true,
     required: true,
     unique: true,
+    validate: [validateEmail, 'Porfavor introduzca un email valido'],
   },
   password: {
     type: String,
     required: true,
+    trim: true,
   },
+  // startdate: {
+  //   type: Date,
+  //   trim: true,
+  //   default: Date.now,
+  // },
+  description: {
+    type: String,
+    trim: true,
+  },
+  // status: {
+  //   type: String,
+  //   trim: true,
+  //   validate: [validateStatus, 'Porafavor introduzca active o inactive'],
+  // },
 })
 
 //Ciframos la password con Bcrypt , this.password se refiere al Shema

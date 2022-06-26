@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const User = require('../models/userSchema')
 //Auth
 require('../auth/auth')
 const jwt = require('jsonwebtoken')
@@ -10,9 +11,20 @@ router.post(
   //Ponemos sesion falsa por que no queremos sesiones
   passport.authenticate('register', { session: false }),
   async (req, res, next) => {
-    res.json({
-      messague: 'Registrado',
-      user: req.user,
+    const user = new User({
+      email: req.user.email,
+      password: req.user.password,
+      description: req.body.description,
+    })
+
+    User.create(user, function (err, user) {
+      if (err) {
+        console.log('Error creating User: ', err)
+        res.status(400).json(err)
+      } else {
+        console.log('User Created: ', user)
+        res.status(200).json(user)
+      }
     })
   },
 )
@@ -29,7 +41,7 @@ router.post('/login', async (req, res, next) => {
         //Nunca le pasamos la password al token ya que esto es un erro grave de seguridad
         const body = {
           _id: user._id,
-          username: user.username,
+          email: user.email,
         }
 
         const token = jwt.sign({ user: body }, 'TOP_SECRET')
