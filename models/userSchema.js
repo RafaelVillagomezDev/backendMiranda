@@ -65,11 +65,11 @@ const userSchema = mongoose.Schema({
       'Porfavor introduzca manager o recepcionist o room service',
     ],
   },
-  photos: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+  // photos: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   required: true,
+  // },
 })
 
 //Ciframos la password con Bcrypt , this.password se refiere al Shema
