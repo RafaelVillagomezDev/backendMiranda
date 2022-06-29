@@ -21,6 +21,8 @@ const validatePhone = (phone) => {
   return re.test(phone)
 }
 
+const photosSchema = mongoose.Schema({ url: 'string' })
+
 const userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -60,14 +62,14 @@ const userSchema = mongoose.Schema({
     trim: true,
     validate: [
       validatePosition,
-      'Porafavor introduzca manager o recepcionist o room service',
+      'Porfavor introduzca manager o recepcionist o room service',
     ],
   },
-  photos: [
-    {
-      url: String,
-    },
-  ],
+  photos: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
 })
 
 //Ciframos la password con Bcrypt , this.password se refiere al Shema
