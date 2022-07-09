@@ -42,9 +42,11 @@ router.post('/login', async (req, res, next) => {
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error)
         //Nunca le pasamos la password al token ya que esto es un erro grave de seguridad
+
         const body = {
           _id: user._id,
           email: user.email,
+          position: user.position,
         }
 
         const token = jwt.sign({ user: body }, 'TOP_SECRET')
