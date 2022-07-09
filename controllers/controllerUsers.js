@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt')
 // }
 
 const getProfile = (req, res, next) => {
+  console.log(req.user)
   res.json({
     message: 'Es una ruta segura',
     user: req.user,
