@@ -1,7 +1,6 @@
 const data = require('../fakeData.json')
-const UserShema = require('../models/userSchema')
 const bcrypt = require('bcrypt')
-
+const User = require('../models/userSchema')
 // const getUser = (req, res) => {
 //   const id = req.params.id
 //   const user = data.users.find((room) => room.id == id)
@@ -12,11 +11,25 @@ const bcrypt = require('bcrypt')
 // }
 
 const getProfile = (req, res, next) => {
-  console.log(req.user)
-  res.json({
-    message: 'Es una ruta segura',
-    user: req.user,
-    token: req.query.secret_token,
+  const email = req.user.email
+  User.findOne({ email }, function (error, user) {
+    if (error) {
+      res.json({
+        error: error,
+      })
+    } else {
+      res.json({
+        message: 'Es una ruta segura',
+        email: user.email,
+        password: user.password,
+        phone: user.phone,
+        description: user.description,
+        status: user.status,
+        position: user.position,
+        startdate: user.startdate,
+        token: req.query.secret_token,
+      })
+    }
   })
 }
 
