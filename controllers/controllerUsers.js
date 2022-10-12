@@ -16,6 +16,7 @@ const getProfile = (req, res, next) => {
   })
 }
 
+//Peticion para que solamente un usuario con posicion de manager pueda ver todos los usuarios//
 const getUsers = (req, res) => {
   let currentPosition = req.user.position
   if (currentPosition == 'manager') {
@@ -34,8 +35,26 @@ const getUsers = (req, res) => {
     })
   }
 }
+//Eliminar usuario por id //
+const deleteUser = (req, res) => {
+  User.findOneAndRemove({ _id: req.params.id })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.id + 'No se ha podido eliminar')
+      } else {
+        res
+          .status(200)
+          .send(req.params.id + ' Usuario ha sido eliminado correctamente.')
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+      res.status(500).send('Error: ' + err)
+    })
+}
 
 module.exports = {
   getProfile,
   getUsers,
+  deleteUser,
 }
